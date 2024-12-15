@@ -1,0 +1,25 @@
+---
+- name: Ping Network Devices via CLI
+  hosts: all
+  gather_facts: no
+  connection: network_cli
+  tasks:
+    - name: Ping from network device CLI
+      ios_command:
+        commands:
+          - ping 192.168.1.10
+      register: ping_result
+      
+    - name: Ping from network device CLI
+      ios_command:
+        commands:
+          - ping 192.168.1.1
+      register: ping_result
+ 
+    - name: Display ping result
+      ansible.builtin.debug:
+        var: ping_result.stdout_lines
+        
+    - name: Display ping result
+      ansible.builtin.debug:
+        var: ping_result.stdout_lines
