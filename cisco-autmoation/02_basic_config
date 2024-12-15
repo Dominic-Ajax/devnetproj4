@@ -1,0 +1,23 @@
+---
+- name: Basic Configuration for Network Devices
+  hosts: all
+  gather_facts: no
+  connection: network_cli
+  tasks:
+    - name: Configure hostname
+      ios_config:
+        lines:
+          - hostname {{ inventory_hostname }}
+      when: ansible_network_os == "ios"
+
+    - name: Set domain name
+      ios_config:
+        lines:
+          - ip domain-name example.com
+      when: ansible_network_os == "ios"
+
+    - name: Generate RSA key pair for SSH
+      ios_command:
+        lines:
+          - crypto key generate rsa usage-keys label ssh-key modulus 1024
+      when: ansible_network_os == "ios"
