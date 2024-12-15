@@ -1,0 +1,20 @@
+---
+- name: Create VLANs on Switches
+  hosts: switches
+  gather_facts: no
+  connection: network_cli
+  tasks:
+    - name: Create VLAN 10
+      ios_config:
+        lines:
+          - vlan 10
+          - name VLAN_10
+      when: ansible_network_os == "ios"
+
+    - name: Create VLAN 20
+      ios_config:
+        lines:
+          - vlan 20
+          - name VLAN_20
+      when: ansible_network_os == "ios"
+
