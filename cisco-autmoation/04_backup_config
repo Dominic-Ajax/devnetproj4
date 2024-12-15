@@ -1,1 +1,31 @@
-
+---
+- name: Backup Running Configuration of Devices
+  hosts: all
+  gather_facts: no
+  connection: network_cli
+  tasks:
+    - name: Get running config from router
+      ios_command:
+        commands:
+          - show running-config
+      register: running_config
+      when: ansible_network_os == "ios"
+ 
+    - name: Save running config to file (router)
+      copy:
+        content: "{{ running_config.stdout[0] }}"
+        dest: "/home/devasc/backups/{{ inventory_hostname }}_running_config.cfg"
+      when: ansible_network_os == "ios"
+ 
+    - name: Get running config from switch
+      ios_command:
+        commands:
+          - show running-config
+      register: running_config
+      when: ansible_network_os == "ios"
+ 
+    - name: Save running config to file (switch)
+      copy:
+        content: "{{ running_config.stdout[0] }}"
+        dest: "/home/devasc/backups/{{ inventory_hostname }}_running_config.cfg"
+      when: ansible_network_os == "ios"
